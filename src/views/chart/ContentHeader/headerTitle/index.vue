@@ -26,7 +26,6 @@
       show-count
       placeholder="请输入项目名称"
       v-model:value.trim="title"
-      @keyup.enter="handleBlur"
       @blur="handleBlur"
     ></n-input>
   </n-space>
@@ -75,10 +74,9 @@ const handleBlur = async () => {
   focus.value = false
   chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, title.value || '')
   const res = (await updateProjectApi({
-    id: fetchRouteParamsLocation(),
+    id: Number(fetchRouteParamsLocation()),
     projectName: title.value
   }))
-  console.log('resres', res)
   if (res && res.code === ResultEnum.SUCCESS) {
     dataSyncUpdate()
   } else {

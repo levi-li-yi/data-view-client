@@ -1,3 +1,8 @@
+/*
+ * @Author: Levi Li
+ * @Date: 2024-02-21 11:32:10
+ * @description: 
+ */
 import { http } from '@/api/http'
 import { httpErrorHandle } from '@/utils'
 import { ContentTypeEnum, RequestHttpEnum, ModuleTypeEnum } from '@/enums/httpEnum'
@@ -6,7 +11,7 @@ import { ProjectItem, ProjectDetail } from './project'
 // * 项目列表
 export const projectListApi = async (data: object) => {
   try {
-    const res = await http(RequestHttpEnum.GET)<ProjectItem[]>(`${ModuleTypeEnum.PROJECT}/list`, data)
+    const res = await http(RequestHttpEnum.GET)<any>(`${ModuleTypeEnum.PROJECT}/list`, data)
     return res
   } catch {
     httpErrorHandle()

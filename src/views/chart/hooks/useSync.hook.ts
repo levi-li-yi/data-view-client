@@ -1,3 +1,8 @@
+/*
+ * @Author: Levi Li
+ * @Date: 2024-02-21 11:32:13
+ * @description: 
+ */
 import { onUnmounted } from 'vue';
 import html2canvas from 'html2canvas'
 import { getUUID, httpErrorHandle, fetchRouteParamsLocation, base64toFile, JSONStringify, JSONParse } from '@/utils'
@@ -267,6 +272,7 @@ export const useSync = () => {
       }
       chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
     } catch (error) {
+      console.log('error error', error)
       chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
       httpErrorHandle()
     }
@@ -323,6 +329,7 @@ export const useSync = () => {
 
     // 保存数据
     let params = new FormData()
+    console.log('projectId', projectId)
     params.append('projectId', projectId)
     params.append('content', JSONStringify(chartEditStore.getStorageInfo() || {}))
     const res= await saveProjectApi(params)

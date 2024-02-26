@@ -27,8 +27,8 @@ export const useDataListInit = () => {
       pageNum: paginat.pageNum,
       pageSize: paginat.pageSize
     })
-    if (res && res) {
-      const { total, rows } = res as any // 这里的count与data平级，不在Response结构中
+    if (res && res?.data) {
+      const { total, rows } = res.data // 这里的count与data平级，不在Response结构中
       paginat.count = total
       list.value = rows.map((e: any) => {
         const { id, projectName, state, createTime, indexImage, createUserId } = e
@@ -38,7 +38,7 @@ export const useDataListInit = () => {
           createId: createUserId,
           time: createTime,
           image: indexImage,
-          release: state !== -1
+          release: state && state !== -1
         }
       })
       setTimeout(() => {
