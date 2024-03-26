@@ -212,7 +212,7 @@ const shuffleHandle = () => {
 }
 
 function getCode() {
-  getCodeImg().then((res: any) => {
+  getCodeImg().then(({data:res}: any) => {
     codeUrl.value = res.img;
     formInline.uuid = res.uuid;
   });
@@ -226,7 +226,7 @@ const handleSubmit = async (e: Event) => {
       const { username, password, code, uuid } = formInline
       loading.value = true
       // 提交请求
-      const res = await loginApi({
+      const {data:res} = await loginApi({
         username,
         password,
         code,

@@ -1,5 +1,5 @@
 import { echartOptionProfixHandle, PublicConfigClass } from '@/packages/public'
-import { BarCommonConfig } from './index'
+import { BarStackConfig } from './index'
 import { CreateComponentType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
@@ -8,6 +8,7 @@ export const includes = ['legend', 'xAxis', 'yAxis', 'grid']
 export const seriesItem = {
   type: 'bar',
   barWidth: 15,
+  stack:'pileBar',
   label: {
     show: true,
     position: 'top',
@@ -41,8 +42,8 @@ export const option = {
 }
 
 export default class Config extends PublicConfigClass implements CreateComponentType {
-  public key = BarCommonConfig.key
-  public chartConfig = cloneDeep(BarCommonConfig)
+  public key = BarStackConfig.key
+  public chartConfig = cloneDeep(BarStackConfig)
   // 图表配置项
   public option = echartOptionProfixHandle(option, includes)
 }

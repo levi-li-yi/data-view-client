@@ -62,12 +62,7 @@
       <setting-item name="位置">
         <n-select
           v-model:value="item.label.position"
-          :options="[
-            { label: 'top', value: 'top' },
-            { label: 'left', value: 'left' },
-            { label: 'right', value: 'right' },
-            { label: 'bottom', value: 'bottom' }
-          ]"
+          :options="labelPositionOptions"
         />
       </setting-item>
     </setting-item-box>
@@ -79,6 +74,7 @@ import { PropType, computed } from 'vue'
 import { GlobalSetting, CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
 import { lineConf } from '@/packages/chartConfiguration/echarts'
 import { GlobalThemeJsonType } from '@/settings/chartThemes'
+import { labelPositionOptions } from '@/settings/chart/options'
 
 const props = defineProps({
   optionData: {

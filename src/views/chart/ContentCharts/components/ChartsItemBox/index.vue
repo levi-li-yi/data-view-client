@@ -23,6 +23,7 @@
           </n-text>
         </div>
         <div class="list-center go-flex-center go-transition" draggable="true">
+			
           <GoIconify v-if="item.icon" class="list-img" :icon="item.icon" color="#999" width="48" style="height: auto" />
           <chart-glob-image v-else class="list-img" :chartConfig="item" />
         </div>
