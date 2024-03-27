@@ -9,6 +9,7 @@ export const seriesItem = {
   type: 'bar',
   barWidth: 15,
   stack:'pileBar',
+  
   label: {
     show: true,
     position: 'top',
@@ -24,6 +25,7 @@ export const seriesItem = {
 export const lineSeriesItem = {
   type: 'line',
   symbol: 'circle',
+  smooth: true,
   label: {
     show: true,
     position: 'top',

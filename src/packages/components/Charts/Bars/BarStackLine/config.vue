@@ -4,10 +4,17 @@
  * @description: 
 -->
 <template>
+  
   <!-- Echarts 全局设置 -->
   <global-setting :optionData="optionData"></global-setting>
-  <CollapseItem v-for="(item, index) in seriesList" :key="index" :name="`柱状图-${index + 1}`" :expanded="true">
-    <SettingItemBox name="图形">
+
+  <CollapseItem
+    v-for="(item, index) in seriesList"
+    :key="index"
+    :name="`${item.type == 'bar' ? `柱状图-${index + 1}` : '折线图'}`"
+    :expanded="true"
+  >
+    <SettingItemBox name="图形" v-if="item.type == 'bar'">
       <SettingItem name="宽度">
         <n-input-number
           v-model:value="item.barWidth"
@@ -21,6 +28,39 @@
         <n-input-number v-model:value="item.itemStyle.borderRadius" :min="0" size="small"></n-input-number>
       </SettingItem>
     </SettingItemBox>
+
+    <template v-if="item.type == 'line'">
+      <SettingItemBox name="线条">
+        <SettingItem name="宽度">
+          <n-input-number
+            v-model:value="item.lineStyle.width"
+            :min="1"
+            :max="100"
+            size="small"
+            placeholder="自动计算"
+          ></n-input-number>
+        </SettingItem>
+        <SettingItem name="类型">
+          <n-select v-model:value="item.lineStyle.type" size="small" :options="lineConf.lineStyle.type"></n-select>
+        </SettingItem>
+        <SettingItem name="平滑曲线">
+          <n-slider v-model:value="item.smooth" :step="0.1" max="1" />
+        </SettingItem>
+      </SettingItemBox>
+
+      <SettingItemBox name="实心点">
+        <SettingItem name="大小">
+          <n-input-number
+            v-model:value="item.symbolSize"
+            :min="1"
+            :max="100"
+            size="small"
+            placeholder="自动计算"
+          ></n-input-number>
+        </SettingItem>
+      </SettingItemBox>
+    </template>
+
     <setting-item-box name="标签">
       <setting-item>
         <n-space>
@@ -44,6 +84,7 @@
 <script setup lang="ts">
 import { PropType, computed } from 'vue'
 import { GlobalSetting, CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
+import { lineConf } from '@/packages/chartConfiguration/echarts'
 import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import { labelPositionOptions } from '@/settings/chart/options'
 
@@ -53,6 +94,8 @@ const props = defineProps({
     required: true
   }
 })
+
+
 
 const seriesList = computed(() => {
   return props.optionData.series
