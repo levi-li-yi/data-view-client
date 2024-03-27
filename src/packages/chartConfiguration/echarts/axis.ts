@@ -52,5 +52,24 @@ export const axisConfig = {
         value: 'horizontal'
       }
     ]
-  }
+  },
+  // y轴 坐标轴类型
+  ytype: [
+    {
+      label: '数值轴',
+      value: 'value'
+    },
+    {
+      label: '类目轴',
+      value: 'category'
+    },
+    {
+      label: '时间轴',
+      value: 'time'
+    },
+    {
+      label: '对数轴',
+      value: 'log'
+    }
+  ]
 }

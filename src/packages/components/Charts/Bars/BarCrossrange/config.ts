@@ -1,3 +1,8 @@
+/*
+ * @Author: qinx
+ * @Date: 2024-03-25 16:09:39
+ * @description:
+ */
 import { echartOptionProfixHandle, PublicConfigClass } from '@/packages/public'
 import { BarCrossrangeConfig } from './index'
 import { CreateComponentType } from '@/packages/index.d'
@@ -31,10 +36,6 @@ export const option = {
   xAxis: {
     show: true,
     type: 'value'
-  },
-  yAxis: {
-    show: true,
-    type: 'category'
   },
   dataset: { ...dataJson },
   series: [seriesItem, seriesItem]

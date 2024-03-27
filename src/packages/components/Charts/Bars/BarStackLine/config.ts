@@ -62,10 +62,6 @@ export const option = {
     show: true,
     type: 'category'
   },
-  yAxis: {
-    show: true,
-    type: 'value'
-  },
   dataset: { ...dataJson },
   series: [lineSeriesItem, seriesItem, seriesItem]
 }

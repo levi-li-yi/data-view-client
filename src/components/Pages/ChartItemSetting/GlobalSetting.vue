@@ -164,6 +164,11 @@
     <template #header>
       <n-switch v-model:value="yAxis.show" size="small"></n-switch>
     </template>
+    <setting-item-box name="坐标轴类型">
+      <setting-item>
+        <n-select v-model:value="yAxis.type" :options="axisConfig.ytype" />
+      </setting-item>
+    </setting-item-box>
     <setting-item-box name="单位">
       <setting-item name="名称">
         <n-input v-model:value="yAxis.name" size="small"></n-input>
@@ -245,6 +250,103 @@
       <setting-item name="类型">
         <n-select
           v-model:value="yAxis.splitLine.lineStyle.type"
+          size="small"
+          :options="axisConfig.splitLint.lineStyle.type"
+        ></n-select>
+      </setting-item>
+    </setting-item-box>
+  </collapse-item>
+
+  <collapse-item v-if="yAxisRight" name="Y轴右">
+    <template #header>
+      <n-switch v-model:value="yAxisRight.show" size="small"></n-switch>
+    </template>
+    <setting-item-box name="坐标轴类型">
+      <setting-item>
+        <n-select v-model:value="yAxisRight.type" :options="axisConfig.ytype" />
+      </setting-item>
+    </setting-item-box>
+    <setting-item-box name="单位">
+      <setting-item name="名称">
+        <n-input v-model:value="yAxisRight.name" size="small"></n-input>
+      </setting-item>
+      <setting-item name="颜色">
+        <n-color-picker size="small" v-model:value="yAxisRight.nameTextStyle.color"></n-color-picker>
+      </setting-item>
+      <setting-item name="大小">
+        <n-input-number v-model:value="yAxisRight.nameTextStyle.fontSize" :min="8" size="small"></n-input-number>
+      </setting-item>
+      <setting-item name="偏移量">
+        <n-input-number v-model:value="yAxisRight.nameGap" :min="5" size="small"></n-input-number>
+      </setting-item>
+    </setting-item-box>
+    <setting-item-box name="标签">
+      <setting-item name="展示">
+        <n-space>
+          <n-switch v-model:value="yAxisRight.axisLabel.show" size="small"></n-switch>
+        </n-space>
+      </setting-item>
+      <setting-item name="颜色">
+        <n-color-picker size="small" v-model:value="yAxisRight.axisLabel.color"></n-color-picker>
+      </setting-item>
+      <setting-item name="大小">
+        <n-input-number v-model:value="yAxisRight.axisLabel.fontSize" :min="8" size="small"></n-input-number>
+      </setting-item>
+      <setting-item name="偏移量">
+        <n-input-number v-model:value="yAxisRight.axisLabel.rotate" :min="-90" :max="90" size="small"></n-input-number>
+      </setting-item>
+    </setting-item-box>
+    <setting-item-box name="轴线">
+      <setting-item name="展示">
+        <n-space>
+          <n-switch v-model:value="yAxisRight.axisLine.show" size="small"></n-switch>
+        </n-space>
+      </setting-item>
+      <setting-item name="颜色">
+        <n-color-picker v-model:value="yAxisRight.axisLine.lineStyle.color" size="small"></n-color-picker>
+      </setting-item>
+      <setting-item name="粗细">
+        <n-input-number v-model:value="yAxisRight.axisLine.lineStyle.width" :min="1" size="small"></n-input-number>
+      </setting-item>
+      <setting-item name="位置">
+        <n-select v-model:value="yAxisRight.position" size="small" :options="axisConfig.yposition"></n-select>
+      </setting-item>
+      <setting-item name="对齐零">
+        <n-space>
+          <n-switch v-model:value="yAxisRight.axisLine.onZero" size="small"></n-switch>
+        </n-space>
+      </setting-item>
+      <setting-item name="反向">
+        <n-space>
+          <n-switch v-model:value="yAxisRight.inverse" size="small"></n-switch>
+        </n-space>
+      </setting-item>
+    </setting-item-box>
+    <setting-item-box name="刻度">
+      <setting-item name="展示">
+        <n-space>
+          <n-switch v-model:value="yAxisRight.axisTick.show" size="small"></n-switch>
+        </n-space>
+      </setting-item>
+      <setting-item name="长度">
+        <n-input-number v-model:value="yAxisRight.axisTick.length" :min="1" size="small"></n-input-number>
+      </setting-item>
+    </setting-item-box>
+    <setting-item-box name="分割线">
+      <setting-item name="展示">
+        <n-space>
+          <n-switch v-model:value="yAxisRight.splitLine.show" size="small"></n-switch>
+        </n-space>
+      </setting-item>
+      <setting-item name="颜色">
+        <n-color-picker v-model:value="yAxisRight.splitLine.lineStyle.color" size="small"></n-color-picker>
+      </setting-item>
+      <setting-item name="粗细">
+        <n-input-number v-model:value="yAxisRight.splitLine.lineStyle.width" :min="1" size="small"></n-input-number>
+      </setting-item>
+      <setting-item name="类型">
+        <n-select
+          v-model:value="yAxisRight.splitLine.lineStyle.type"
           size="small"
           :options="axisConfig.splitLint.lineStyle.type"
         ></n-select>
@@ -343,6 +445,8 @@ import { CollapseItem, SettingItemBox, SettingItem, GlobalSettingPosition } from
 import { icon } from '@/plugins'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import EchartsRendererSetting from './EchartsRendererSetting.vue'
+import { isArray } from 'lodash'
+import { ObjectType } from '@/interfaces'
 
 const { HelpOutlineIcon } = icon.ionicons5
 
@@ -372,8 +476,12 @@ const xAxis = computed(() => {
   return props.optionData.xAxis
 })
 
-const yAxis = computed(() => {
-  return props.optionData.yAxis
+const yAxis: ObjectType = computed(() => {
+  return isArray(props.optionData.yAxis) && props.optionData.yAxis.length ? props.optionData.yAxis[0] : {}
+})
+
+const yAxisRight: ObjectType = computed(() => {
+  return isArray(props.optionData.yAxis) && props.optionData.yAxis.length ? props.optionData.yAxis[1] : {}
 })
 
 const legend = computed(() => {
@@ -389,16 +497,20 @@ const visualMap = computed(() => {
 })
 
 // 监听legend color颜色改变type = scroll的颜色
-watch(() => legend.value && legend.value.textStyle.color, (newVal) => {
-  if (legend.value && newVal) {
-     if (!legend.value.pageTextStyle) {
-      legend.value.pageTextStyle = { color: newVal }
-    } else {
-      legend.value.pageTextStyle.color = newVal
+watch(
+  () => legend.value && legend.value.textStyle.color,
+  newVal => {
+    if (legend.value && newVal) {
+      if (!legend.value.pageTextStyle) {
+        legend.value.pageTextStyle = { color: newVal }
+      } else {
+        legend.value.pageTextStyle.color = newVal
+      }
     }
+  },
+  {
+    immediate: true,
+    deep: true
   }
-}, {
-  immediate: true,
-  deep: true,
-})
+)
 </script>

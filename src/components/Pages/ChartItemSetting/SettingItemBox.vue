@@ -1,3 +1,8 @@
+<!--
+ * @Author: qinx
+ * @Date: 2024-03-02 09:13:09
+ * @description: 
+-->
 <template>
   <div class="go-config-item-box">
     <n-text class="item-left" depth="2">
@@ -38,7 +43,7 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-$leftWidth: 60px;
+$leftWidth: 80px;
 @include go('config-item-box') {
   position: relative;
   display: flex;
