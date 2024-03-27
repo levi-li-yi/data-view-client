@@ -4,7 +4,6 @@
  * @description: 
 -->
 <template>
-  
   <!-- Echarts 全局设置 -->
   <global-setting :optionData="optionData"></global-setting>
 
@@ -14,6 +13,12 @@
     :name="`${item.type == 'bar' ? `柱状图-${index + 1}` : '折线图'}`"
     :expanded="true"
   >
+    <SettingItemBox name="类型">
+      <SettingItem>
+        <n-select v-model:value="item.type" :options="chartTypeConf(['line', 'bar'])" />
+      </SettingItem>
+    </SettingItemBox>
+
     <SettingItemBox name="图形" v-if="item.type == 'bar'">
       <SettingItem name="宽度">
         <n-input-number
@@ -27,6 +32,17 @@
       <SettingItem name="圆角">
         <n-input-number v-model:value="item.itemStyle.borderRadius" :min="0" size="small"></n-input-number>
       </SettingItem>
+
+      <SettingItem>
+        <n-space>
+          <n-switch v-model:value="item.stack" size="small" />
+          <n-text>堆叠</n-text>
+        </n-space>
+      </SettingItem>
+
+      <SettingItem />
+
+      <BarItemStyleColor :item="item" />
     </SettingItemBox>
 
     <template v-if="item.type == 'line'">
@@ -84,9 +100,11 @@
 <script setup lang="ts">
 import { PropType, computed } from 'vue'
 import { GlobalSetting, CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
-import { lineConf } from '@/packages/chartConfiguration/echarts'
+import { lineConf, chartTypeConf } from '@/packages/chartConfiguration/echarts'
 import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import { labelPositionOptions } from '@/settings/chart/options'
+
+import BarItemStyleColor from '../Common/BarItemStyleColor.vue'
 
 const props = defineProps({
   optionData: {
@@ -94,8 +112,6 @@ const props = defineProps({
     required: true
   }
 })
-
-
 
 const seriesList = computed(() => {
   return props.optionData.series

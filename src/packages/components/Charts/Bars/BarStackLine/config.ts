@@ -10,11 +10,11 @@ import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
 
 export const includes = ['legend', 'xAxis', 'yAxis', 'grid']
-export const seriesItem = {
-  type: 'bar',
+
+const commonSeriesItem = {
   barWidth: 15,
-  stack: 'pileBar',
-
+  yAxisIndex: 0,
+  stack: true,
   label: {
     show: true,
     position: 'top',
@@ -22,31 +22,30 @@ export const seriesItem = {
     fontSize: 12
   },
   itemStyle: {
-    color: null,
-    borderRadius: 2
-  }
-}
+    borderRadius: 2,
+    borderWidth: 1,
+    color: '#FFE47A'
+  },
 
-export const lineSeriesItem = {
-  type: 'line',
   symbol: 'circle',
-  smooth: 0.5,
-  label: {
-    show: true,
-    position: 'top',
-    color: '#fff',
-    fontSize: 12
-  },
   symbolSize: 5, //设定实心点的大小
-  itemStyle: {
-    color: '#FFE47A',
-    borderWidth: 1
-  },
+  smooth: 0.5,
   lineStyle: {
     type: 'solid',
     width: 3,
     color: null
   }
+}
+
+export const seriesItem = {
+  type: 'bar',
+  ...commonSeriesItem
+}
+
+export const lineSeriesItem = {
+  type: 'line',
+  ...commonSeriesItem,
+  stack: false
 }
 
 export const option = {
