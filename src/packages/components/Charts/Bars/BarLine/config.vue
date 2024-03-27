@@ -1,12 +1,20 @@
 <template>
   <!-- Echarts 全局设置 -->
   <global-setting :optionData="optionData"></global-setting>
+
   <CollapseItem
     v-for="(item, index) in seriesList"
     :key="index"
-    :name="`${item.type == 'bar' ? '柱状图' : '折线图'}`"
+    :name="index"
+    :title="`${item.type == 'bar' ? '柱状图' : '折线图'}`"
     :expanded="true"
   >
+    <SettingItemBox name="类型">
+      <SettingItem>
+        <n-select v-model:value="item.type" :options="chartTypeConf(['line', 'bar'])" />
+      </SettingItem>
+    </SettingItemBox>
+
     <SettingItemBox name="图形" v-if="item.type == 'bar'">
       <SettingItem name="宽度">
         <n-input-number
@@ -21,6 +29,7 @@
         <n-input-number v-model:value="item.itemStyle.borderRadius" :min="0" size="small"></n-input-number>
       </SettingItem>
     </SettingItemBox>
+
     <SettingItemBox name="线条" v-if="item.type == 'line'">
       <SettingItem name="宽度">
         <n-input-number
@@ -34,7 +43,11 @@
       <SettingItem name="类型">
         <n-select v-model:value="item.lineStyle.type" size="small" :options="lineConf.lineStyle.type"></n-select>
       </SettingItem>
+      <SettingItem name="平滑曲线">
+        <n-slider v-model:value="item.smooth" :step="0.1" max="1" />
+      </SettingItem>
     </SettingItemBox>
+
     <SettingItemBox name="实心点" v-if="item.type == 'line'">
       <SettingItem name="大小">
         <n-input-number
@@ -46,6 +59,7 @@
         ></n-input-number>
       </SettingItem>
     </SettingItemBox>
+
     <setting-item-box name="标签">
       <setting-item>
         <n-space>
@@ -60,10 +74,13 @@
         <n-color-picker size="small" :modes="['hex']" v-model:value="item.label.color"></n-color-picker>
       </setting-item>
       <setting-item name="位置">
-        <n-select
-          v-model:value="item.label.position"
-          :options="labelPositionOptions"
-        />
+        <n-select v-model:value="item.label.position" :options="labelPositionOptions" />
+      </setting-item>
+    </setting-item-box>
+
+    <setting-item-box name="y轴">
+      <setting-item>
+        <n-select v-model:value="item.yAxisIndex" :options="ySelectOption" />
       </setting-item>
     </setting-item-box>
   </CollapseItem>
@@ -72,7 +89,8 @@
 <script setup lang="ts">
 import { PropType, computed } from 'vue'
 import { GlobalSetting, CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
-import { lineConf } from '@/packages/chartConfiguration/echarts'
+import { lineConf, ySelectOption, chartTypeConf } from '@/packages/chartConfiguration/echarts'
+
 import { GlobalThemeJsonType } from '@/settings/chartThemes'
 import { labelPositionOptions } from '@/settings/chart/options'
 
@@ -84,6 +102,7 @@ const props = defineProps({
 })
 
 const seriesList = computed(() => {
+  console.log(props.optionData, 'optionData~!~~~~~~~~~')
   return props.optionData.series
 })
 </script>

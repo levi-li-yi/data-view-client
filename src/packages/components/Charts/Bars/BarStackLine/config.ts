@@ -1,3 +1,8 @@
+/*
+ * @Author: qinx
+ * @Date: 2024-03-27 08:17:15
+ * @description:
+ */
 import { echartOptionProfixHandle, PublicConfigClass } from '@/packages/public'
 import { BarStackLineConfig } from './index'
 import { CreateComponentType } from '@/packages/index.d'
@@ -8,8 +13,8 @@ export const includes = ['legend', 'xAxis', 'yAxis', 'grid']
 export const seriesItem = {
   type: 'bar',
   barWidth: 15,
-  stack:'pileBar',
-  
+  stack: 'pileBar',
+
   label: {
     show: true,
     position: 'top',
@@ -25,7 +30,7 @@ export const seriesItem = {
 export const lineSeriesItem = {
   type: 'line',
   symbol: 'circle',
-  smooth: true,
+  smooth: 0.5,
   label: {
     show: true,
     position: 'top',
@@ -62,7 +67,7 @@ export const option = {
     type: 'value'
   },
   dataset: { ...dataJson },
-  series: [lineSeriesItem,seriesItem, seriesItem]
+  series: [lineSeriesItem, seriesItem, seriesItem]
 }
 
 export default class Config extends PublicConfigClass implements CreateComponentType {

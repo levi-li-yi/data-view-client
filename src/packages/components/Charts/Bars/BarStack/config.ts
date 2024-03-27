@@ -8,7 +8,7 @@ export const includes = ['legend', 'xAxis', 'yAxis', 'grid']
 export const seriesItem = {
   type: 'bar',
   barWidth: 15,
-  stack:'pileBar',
+  stack: true,
   label: {
     show: true,
     position: 'top',

@@ -24,11 +24,7 @@
     </layout-header>
     <div class="go-login">
       <div class="go-login-carousel">
-        <n-carousel
-          autoplay
-          dot-type="line"
-          :interval="Number(carouselInterval)"
-        >
+        <n-carousel autoplay dot-type="line" :interval="Number(carouselInterval)">
           <img
             v-for="(item, i) in carouselImgList"
             :key="i"
@@ -49,19 +45,14 @@
                   alt="展示图片"
                 />
               </div> -->
-              <n-form
-                ref="formRef"
-                label-placement="left"
-                size="large"
-                :model="formInline"
-                :rules="rules"
-              >
+              <n-form ref="formRef" label-placement="left" size="large" :model="formInline" :rules="rules">
                 <n-form-item path="username">
                   <n-input
                     v-model:value="formInline.username"
                     type="text"
                     maxlength="16"
                     :placeholder="$t('global.form_account')"
+                    @keydown.enter="handleSubmit"
                   >
                     <template #prefix>
                       <n-icon size="18">
@@ -77,6 +68,7 @@
                     maxlength="16"
                     show-password-on="click"
                     :placeholder="$t('global.form_password')"
+                    @keydown.enter="handleSubmit"
                   >
                     <template #prefix>
                       <n-icon size="18">
@@ -93,6 +85,7 @@
                     maxlength="16"
                     show-password-on="click"
                     :placeholder="$t('global.form_code')"
+                    @keydown.enter="handleSubmit"
                   >
                   </n-input>
                   <div class="login-code" v-html="codeUrl" @click="getCode"></div>
@@ -100,21 +93,14 @@
                 <n-form-item>
                   <div class="flex justify-between">
                     <div class="flex-initial">
-                      <n-checkbox v-model:checked="autoLogin">{{
-                        $t('login.form_auto')
-                      }}</n-checkbox>
+                      <n-checkbox v-model:checked="autoLogin">{{ $t('login.form_auto') }}</n-checkbox>
                     </div>
                   </div>
                 </n-form-item>
                 <n-form-item>
-                  <n-button
-                    type="primary"
-                    @click="handleSubmit"
-                    size="large"
-                    :loading="loading"
-                    block
-                    >{{ $t('login.form_button') }}</n-button
-                  >
+                  <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>{{
+                    $t('login.form_button')
+                  }}</n-button>
                 </n-form-item>
               </n-form>
             </n-card>
@@ -162,22 +148,22 @@ const formInline = reactive({
   username: 'admin',
   password: 'admin123',
   code: '',
-  uuid: '',
+  uuid: ''
 })
 
-const codeUrl = ref("");
+const codeUrl = ref('')
 
 const rules = {
   username: {
     required: true,
     message: t('global.form_account'),
-    trigger: 'blur',
+    trigger: 'blur'
   },
   password: {
     required: true,
     message: t('global.form_password'),
-    trigger: 'blur',
-  },
+    trigger: 'blur'
+  }
 }
 
 // 定时器
@@ -187,17 +173,7 @@ const shuffleTimiing = ref()
 const carouselImgList = ['one', 'two', 'three']
 
 // 背景图
-const bgList = ref([
-  'bar_y',
-  'bar_x',
-  'line_gradient',
-  'line',
-  'funnel',
-  'heatmap',
-  'map',
-  'pie',
-  'radar',
-])
+const bgList = ref(['bar_y', 'bar_x', 'line_gradient', 'line', 'funnel', 'heatmap', 'map', 'pie', 'radar'])
 
 // 处理url获取
 const getImageUrl = (name: string, folder: string) => {
@@ -212,10 +188,10 @@ const shuffleHandle = () => {
 }
 
 function getCode() {
-  getCodeImg().then(({data:res}: any) => {
-    codeUrl.value = res.img;
-    formInline.uuid = res.uuid;
-  });
+  getCodeImg().then(({ data: res }: any) => {
+    codeUrl.value = res.img
+    formInline.uuid = res.uuid
+  })
 }
 
 // 登录
@@ -226,7 +202,7 @@ const handleSubmit = async (e: Event) => {
       const { username, password, code, uuid } = formInline
       loading.value = true
       // 提交请求
-      const {data:res} = await loginApi({
+      const { data: res } = await loginApi({
         username,
         password,
         code,
@@ -237,7 +213,7 @@ const handleSubmit = async (e: Event) => {
         // const { tokenValue, tokenName } = res.token
         // const { nickname, username, id } = res.userinfo
 
-        // 存储到 pinia 
+        // 存储到 pinia
         systemStore.setItem(SystemStoreEnum.USER_INFO, {
           [SystemStoreUserInfoEnum.USER_TOKEN]: res.token,
           // [SystemStoreUserInfoEnum.TOKEN_NAME]: tokenName,
@@ -246,7 +222,7 @@ const handleSubmit = async (e: Event) => {
           // [SystemStoreUserInfoEnum.NICK_NAME]: nickname,
           t
         })
-        
+
         window['$message'].success(t('login.login_success'))
         routerTurnByName(PageEnum.BASE_HOME_NAME, true)
       }

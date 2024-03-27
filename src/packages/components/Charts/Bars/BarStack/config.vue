@@ -15,6 +15,17 @@
       <SettingItem name="圆角">
         <n-input-number v-model:value="item.itemStyle.borderRadius" :min="0" size="small"></n-input-number>
       </SettingItem>
+
+      <SettingItem>
+        <n-space>
+          <n-switch v-model:value="item.stack" size="small" />
+          <n-text>堆叠</n-text>
+        </n-space>
+      </SettingItem>
+
+      <SettingItem />
+
+      <BarItemStyleColor :item="item" />
     </SettingItemBox>
     <setting-item-box name="标签">
       <setting-item>
@@ -30,10 +41,7 @@
         <n-color-picker size="small" :modes="['hex']" v-model:value="item.label.color"></n-color-picker>
       </setting-item>
       <setting-item name="位置">
-        <n-select
-          v-model:value="item.label.position"
-          :options="labelPositionOptions"
-        />
+        <n-select v-model:value="item.label.position" :options="labelPositionOptions" />
       </setting-item>
     </setting-item-box>
   </CollapseItem>
@@ -44,6 +52,8 @@ import { PropType, computed } from 'vue'
 import { GlobalSetting, CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
 import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
 import { labelPositionOptions } from '@/settings/chart/options'
+
+import BarItemStyleColor from '../Common/BarItemStyleColor.vue'
 
 const props = defineProps({
   optionData: {
