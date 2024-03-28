@@ -15,8 +15,25 @@
       <SettingItem name="类型">
         <n-select v-model:value="item.lineStyle.type" size="small" :options="lineConf.lineStyle.type"></n-select>
       </SettingItem>
+
+      <setting-item name="颜色">
+        <n-color-picker size="small" :modes="['hex']" v-model:value="item.lineStyle.color"></n-color-picker>
+      </setting-item>
+
+      <SettingItem name="曲线">
+        <n-input-number v-model:value="item.smooth" :min="0" :max="1" :step="0.1" size="small" />
+      </SettingItem>
+
+      <LineItemStyleColor :item="item" />
     </SettingItemBox>
     <SettingItemBox name="实心点">
+      <setting-item>
+        <n-space>
+          <n-switch v-model:value="item.showSymbol" size="small" />
+          <n-text>展示</n-text>
+        </n-space>
+      </setting-item>
+
       <SettingItem name="大小">
         <n-input-number
           v-model:value="item.symbolSize"
@@ -26,6 +43,14 @@
           placeholder="自动计算"
         ></n-input-number>
       </SettingItem>
+
+      <setting-item name="图形">
+        <n-select v-model:value="item.symbol" :options="lineConf.symbol" />
+      </setting-item>
+
+      <setting-item name="颜色">
+        <n-color-picker size="small" :modes="['hex']" v-model:value="item.itemStyle.color"></n-color-picker>
+      </setting-item>
     </SettingItemBox>
     <setting-item-box name="标签">
       <setting-item>
@@ -41,15 +66,7 @@
         <n-color-picker size="small" :modes="['hex']" v-model:value="item.label.color"></n-color-picker>
       </setting-item>
       <setting-item name="位置">
-        <n-select
-          v-model:value="item.label.position"
-          :options="[
-            { label: 'top', value: 'top' },
-            { label: 'left', value: 'left' },
-            { label: 'right', value: 'right' },
-            { label: 'bottom', value: 'bottom' }
-          ]"
-        />
+        <n-select v-model:value="item.label.position" :options="labelPositionOptions" />
       </setting-item>
     </setting-item-box>
   </CollapseItem>
@@ -58,8 +75,13 @@
 <script setup lang="ts">
 import { PropType, computed } from 'vue'
 import { lineConf } from '@/packages/chartConfiguration/echarts/index'
+
+import { labelPositionOptions } from '@/settings/chart/options'
 import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
+
 import { GlobalSetting, CollapseItem, SettingItemBox, SettingItem } from '@/components/Pages/ChartItemSetting'
+
+import LineItemStyleColor from '../Common/LineItemStyleColor.vue'
 
 const props = defineProps({
   optionData: {

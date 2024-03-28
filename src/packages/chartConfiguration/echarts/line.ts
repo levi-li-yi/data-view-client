@@ -1,3 +1,5 @@
+const symbolOptions = ['circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'].map(t=>({ label: t,value:t }))
+
 export const lineConf = {
   lineStyle: {
     type: [
@@ -14,5 +16,6 @@ export const lineConf = {
         value: 'dotted'
       }
     ]
-  }
+  },
+  symbol: symbolOptions
 }

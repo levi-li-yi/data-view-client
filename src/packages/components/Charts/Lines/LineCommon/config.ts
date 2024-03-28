@@ -7,13 +7,16 @@ import dataJson from './data.json'
 export const includes = ['legend', 'xAxis', 'yAxis', 'grid']
 export const seriesItem = {
   type: 'line',
+  smooth: 0.5,
   label: {
     show: true,
     position: 'top',
     color: '#fff',
     fontSize: 12
   },
+  symbol:'circle',
   symbolSize: 5, //设定实心点的大小
+  showSymbol:true,
   itemStyle: {
     color: null,
     borderRadius: 0
@@ -22,7 +25,8 @@ export const seriesItem = {
     type: 'solid',
     width: 3,
     color: null
-  }
+  },
+  areaStyle: null
 }
 
 export const option = {
