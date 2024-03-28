@@ -392,6 +392,95 @@
     </setting-item-box>
   </collapse-item>
 
+  <collapse-item v-if="dataZoomInside && dataZoomSlider" name="区域缩放">
+    <template #header>
+      <n-switch v-model:value="dataZoomSlider.show" size="small"></n-switch>
+    </template>
+
+    <setting-item-box name="内置">
+      <setting-item name="起始百分比">
+        <n-input-number v-model:value="dataZoomInside.start" size="small"></n-input-number>
+      </setting-item>
+      <setting-item name="结束百分比">
+        <n-input-number v-model:value="dataZoomInside.end" size="small"></n-input-number>
+      </setting-item>
+      <setting-item>
+        <n-space>
+          <n-switch v-model:value="dataZoomInside.disabled" size="small"></n-switch>
+          <n-text>停止组件</n-text>
+        </n-space>
+      </setting-item>
+      <setting-item name="锁定选择区域">
+        <n-switch v-model:value="dataZoomInside.zoomLock" size="small"></n-switch>
+      </setting-item>
+    </setting-item-box>
+
+    <setting-item-box name="滑动条">
+      <setting-item>
+        <n-space>
+          <n-switch v-model:value="dataZoomSlider.show" size="small"></n-switch>
+          <n-text>展示</n-text>
+        </n-space>
+      </setting-item>
+
+      <setting-item name="背景颜色">
+        <n-color-picker v-model:value="dataZoomSlider.backgroundColor" size="small"></n-color-picker>
+      </setting-item>
+
+      <setting-item name="填充颜色">
+        <n-color-picker v-model:value="dataZoomSlider.fillerColor" size="small"></n-color-picker>
+      </setting-item>
+
+      <setting-item name="边框颜色">
+        <n-color-picker v-model:value="dataZoomSlider.borderColor" size="small"></n-color-picker>
+      </setting-item>
+
+      <setting-item name="布局方式">
+        <n-select v-model:value="dataZoomSlider.orient" size="small" :options="dataZoomConfig.orient"></n-select>
+      </setting-item>
+      <setting-item name="锁定选择区域">
+        <n-switch v-model:value="dataZoomSlider.zoomLock" size="small"></n-switch>
+      </setting-item>
+      <setting-item name="下侧距离">
+        <n-input-number v-model:value="dataZoomSlider.bottom" size="small"></n-input-number>
+      </setting-item>
+    </setting-item-box>
+
+    <setting-item-box
+      name="滑动条阴影"
+      v-if="dataZoomSlider.dataBackground.lineStyle && dataZoomSlider.dataBackground.areaStyle"
+    >
+      <setting-item name="线条颜色">
+        <n-color-picker v-model:value="dataZoomSlider.dataBackground.lineStyle.color"></n-color-picker>
+      </setting-item>
+      <setting-item name="线条宽度">
+        <n-input-number v-model:value="dataZoomSlider.dataBackground.lineStyle.width" size="small"></n-input-number>
+      </setting-item>
+      <setting-item name="线条类型">
+        <n-select
+          v-model:value="dataZoomSlider.dataBackground.lineStyle.type"
+          size="small"
+          :options="dataZoomConfig.lineType"
+        />
+      </setting-item>
+
+      <setting-item />
+
+      <setting-item name="阴影填充颜色">
+        <n-color-picker v-model:value="dataZoomSlider.dataBackground.areaStyle.color"></n-color-picker>
+      </setting-item>
+      <setting-item name="阴影模糊">
+        <n-input-number
+          v-model:value="dataZoomSlider.dataBackground.areaStyle.shadowBlur"
+          size="small"
+        ></n-input-number>
+      </setting-item>
+      <setting-item name="阴影颜色">
+        <n-color-picker v-model:value="dataZoomSlider.dataBackground.areaStyle.shadowColor"></n-color-picker>
+      </setting-item>
+    </setting-item-box>
+  </collapse-item>
+
   <collapse-item v-if="visualMap" name="视觉映射">
     <template #header>
       <n-switch v-model:value="visualMap.show" size="small"></n-switch>
@@ -440,7 +529,7 @@
 <script setup lang="ts">
 import { PropType, computed, watch } from 'vue'
 import { GlobalThemeJsonType } from '@/settings/chartThemes/index'
-import { axisConfig, legendConfig } from '@/packages/chartConfiguration/echarts/index'
+import { axisConfig, legendConfig, dataZoomConfig } from '@/packages/chartConfiguration/echarts/index'
 import { CollapseItem, SettingItemBox, SettingItem, GlobalSettingPosition } from '@/components/Pages/ChartItemSetting'
 import { icon } from '@/plugins'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
@@ -490,6 +579,14 @@ const legend = computed(() => {
 
 const grid = computed(() => {
   return props.optionData.grid
+})
+
+const dataZoomInside: ObjectType = computed(() => {
+  return isArray(props.optionData.dataZoom) && props.optionData.dataZoom.length ? props.optionData.dataZoom[0] : null
+})
+
+const dataZoomSlider: ObjectType = computed(() => {
+  return isArray(props.optionData.dataZoom) && props.optionData.dataZoom.length ? props.optionData.dataZoom[1] : null
 })
 
 const visualMap = computed(() => {

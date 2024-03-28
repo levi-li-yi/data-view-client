@@ -9,7 +9,7 @@ import { CreateComponentType } from '@/packages/index.d'
 import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
 
-export const includes = ['legend', 'xAxis', 'yAxis', 'grid']
+export const includes = ['legend', 'xAxis', 'yAxis', 'grid', 'dataZoom']
 
 const commonSeriesItem = {
   barWidth: 15,

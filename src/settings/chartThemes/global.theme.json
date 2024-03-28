@@ -125,6 +125,37 @@
       }
     }
   ],
+  "dataZoom": [
+    {
+      "type": "inside",
+      "start": 0,
+      "end": 20,
+      "disabled": false
+    },
+    {
+      "show": false,
+      "type": "slider",
+      "backgroundColor": "#2f4554",
+      "fillerColor": "#a7b7cc",
+      "borderColor": "#d2dbee",
+
+      "dataBackground": {
+        "lineStyle": {
+          "color": "#d2dbee",
+          "width": 0.5,
+          "type": "dotted"
+        },
+        "areaStyle": {
+          "color": "#D4E1FC",
+          "shadowBlur": 1.5,
+          "shadowColor": "#F5F7FB"
+        }
+      },
+      "orient": "horizontal",
+      "zoomLock": false,
+      "bottom": "10"
+    }
+  ],
   "legend": {
     "show": true,
     "type": "scroll",
